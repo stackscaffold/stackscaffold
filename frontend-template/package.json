@@ -1,0 +1,26 @@
+{
+  "name": "frontend",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "vitest",
+    "export-abi": "node scripts/export-abi.mjs"
+  },
+  "dependencies": {
+    "next": "14.2.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "@stacks/connect": "^7",
+    "@stacks/transactions": "^6",
+    "@stacks/network": "^6"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "tailwindcss": "^3",
+    "@hirosystems/clarinet-sdk": "^2",
+    "vitest": "^1"
+  }
+}
+
