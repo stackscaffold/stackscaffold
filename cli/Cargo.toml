@@ -1,0 +1,22 @@
+[package]
+name    = "stacks-dapp"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "stacks-dapp"
+path = "src/main.rs"
+
+[dependencies]
+scaffold            = { path = "../crates/scaffold" }
+parser              = { path = "../crates/parser" }
+codegen             = { path = "../crates/codegen" }
+watcher             = { path = "../crates/watcher" }
+deployer            = { path = "../crates/deployer" }
+process_supervisor  = { path = "../crates/process_supervisor" }
+clap.workspace      = true
+tokio.workspace     = true
+anyhow.workspace    = true
+colored.workspace   = true
+indicatif.workspace = true
+
