@@ -9,5 +9,7 @@ serde.workspace      = true
 serde_json.workspace = true
 tokio.workspace      = true
 reqwest.workspace    = true
-chrono = "0.4"
+chrono = { version = "0.4", features = ["serde"] }
+toml = "0.8"
+hex = "0.4"
 
