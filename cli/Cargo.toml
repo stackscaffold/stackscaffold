@@ -1,10 +1,10 @@
 [package]
-name    = "stacks-dapp"
+name    = "stacksdapp"
 version = "0.1.0"
 edition = "2021"
 
 [[bin]]
-name = "stacks-dapp"
+name = "stacksdapp"
 path = "src/main.rs"
 
 [dependencies]
