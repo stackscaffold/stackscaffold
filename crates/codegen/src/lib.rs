@@ -133,9 +133,26 @@ pub fn render(abis: &[ContractAbi], out_dir: &Path) -> Result<usize> {
     tera.add_raw_template("hooks.ts.tera", HOOKS_TS_TEMPLATE)?;
     tera.add_raw_template("debug_ui.tsx.tera", DEBUG_UI_TSX_TEMPLATE)?;
 
+    // Serialize ABIs and enrich each function arg with a `type_str` field —
+    // a simple lowercase Clarity type string (e.g. "uint128", "bool", "principal",
+    // "string-ascii", "string-utf8", "buff") used by the debug UI to build
+    // typed inputs and call toClarityValue() correctly.
     let contracts_json: Vec<serde_json::Value> = abis
         .iter()
-        .map(|c| serde_json::to_value(c).expect("ContractAbi serialization failed"))
+        .map(|c| {
+            let mut val = serde_json::to_value(c).expect("ContractAbi serialization failed");
+            if let Some(fns) = val["functions"].as_array_mut() {
+                for f in fns.iter_mut() {
+                    if let Some(args) = f["args"].as_array_mut() {
+                        for arg in args.iter_mut() {
+                            let type_str = clarity_type_str(&arg["type"]);
+                            arg["type_str"] = serde_json::Value::String(type_str);
+                        }
+                    }
+                }
+            }
+            val
+        })
         .collect();
 
     let ctx = tera::Context::from_serialize(serde_json::json!({
@@ -151,6 +168,26 @@ pub fn render(abis: &[ContractAbi], out_dir: &Path) -> Result<usize> {
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
+
+/// Convert a serialized AbiType JSON value into a simple Clarity type string
+/// for use in the debug UI. e.g. uint128 → "uint128", string-ascii → "string-ascii"
+fn clarity_type_str(t: &serde_json::Value) -> String {
+    match t {
+        serde_json::Value::String(s) => s.clone(),
+        serde_json::Value::Object(map) => {
+            if map.contains_key("string-ascii") { return "string-ascii".into(); }
+            if map.contains_key("string-utf8")  { return "string-utf8".into(); }
+            if map.contains_key("buffer")        { return "buff".into(); }
+            if map.contains_key("buff")          { return "buff".into(); }
+            if map.contains_key("list")          { return "list".into(); }
+            if map.contains_key("tuple")         { return "tuple".into(); }
+            if map.contains_key("optional")      { return "optional".into(); }
+            if map.contains_key("response")      { return "response".into(); }
+            "unknown".into()
+        }
+        _ => "unknown".into(),
+    }
+}
 
 fn hash_bytes(bytes: &[u8]) -> Vec<u8> {
     let mut hasher = Sha256::new();
