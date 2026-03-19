@@ -399,7 +399,35 @@ NEXT_PUBLIC_NETWORK=devnet
             .await?;
     }
 
-    println!("✅ Project '{name}' created. Next steps:\n  cd {name}\n  stacksdapp dev");
+    println!(
+        "\n✅ Project '{name}' created successfully!\n\
+         \n\
+         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\
+         \n\
+         👉 Recommended — deploy to testnet (no Docker needed):\n\
+         \n\
+         \t1. cd {name}\n\
+         \t2. Get testnet STX from the faucet:\n\
+         \t   https://explorer.hiro.so/sandbox/faucet?chain=testnet\n\
+         \t3. Add your mnemonic to contracts/settings/Testnet.toml:\n\
+         \t   [accounts.deployer]\n\
+         \t   mnemonic = \"your 24 words here\"\n\
+         \t4. stacksdapp deploy --network testnet\n\
+         \t5. stacksdapp dev --network testnet\n\
+         \n\
+         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\
+         \n\
+         🐳 Alternative — run locally with devnet (Docker required):\n\
+         \n\
+         \t1. cd {name}\n\
+         \t2. Start Docker Desktop\n\
+         \t3. stacksdapp dev               ← starts local chain + frontend\n\
+         \t4. stacksdapp deploy --network devnet   ← in a second terminal\n\
+         \n\
+         ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\
+         \n\
+         📖 Docs: https://github.com/scaffold-stack/scaffold-stack\n"
+    );
     Ok(())
 }
 
