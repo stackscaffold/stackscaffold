@@ -30,7 +30,7 @@ docker info          # must be running for devnet
 
 ```bash
 # Clone the scaffold-stacks repo
-git clone https://github.com/YOUR_ORG/scaffold-stacks
+git clone https://github.com/stackscaffold/stackscaffold.git
 cd scaffold-stacks
 
 # Build and install the CLI binary to your PATH
