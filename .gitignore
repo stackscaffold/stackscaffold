@@ -6,4 +6,7 @@ dist
 .vscode
 frontend-template/.next
 frontend-template/node_modules
+LICENSE
+pub.sh
+create_issues.sh
 
